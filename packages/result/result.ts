@@ -47,6 +47,7 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * # Examples
    *
+   * @example
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
    *
@@ -66,6 +67,7 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * # Examples
    *
+   * @example
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
    *
@@ -91,6 +93,7 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * # Examples
    *
+   * @example
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
    *
@@ -110,6 +113,7 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * # Examples
    *
+   * @example
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
    *
@@ -137,6 +141,7 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * # Example
    *
+   * @example
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
    *
@@ -171,6 +176,7 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * # Example
    *
+   * @example
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
    *
@@ -303,10 +309,11 @@ export class Result<T, E> implements Match<[T, E]> {
   }
 
   /**
-   * Methods that can be used similarly to the Match statement, a Rust expression
+   * Methods that can be used similarly to the Match statement, a Rust expression.
    *
    * # Examples
    *
+   * @example
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
    *
@@ -343,6 +350,7 @@ export class Result<T, E> implements Match<[T, E]> {
     }
   }
 
+
   async awaited(): Promise<Result<Awaited<T>, Awaited<E>>> {
     if (this.innerResult.success) {
       if (this.innerResult.value instanceof Promise) {
@@ -360,5 +368,11 @@ export class Result<T, E> implements Match<[T, E]> {
   }
 }
 
+/**
+ * Alias of {@link Result.ok}.
+ */
 export const ok = Result.ok;
+/**
+ * Alias of {@link Resule.err}.
+ */
 export const err = Result.err;
