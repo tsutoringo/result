@@ -63,13 +63,13 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * @example
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertEquals } from "jsr:@std/assert@1";
    *
    * const x: Result<number, string> = Result.ok(-3);
-   * assertEquals(x.is_ok(), true);
+   * assertEquals(x.isOk(), true);
    *
-   * const y: Result<number, string> = Result.err('Some error message');
-   * assertEquals(y.is_ok(), false);
+   * const y: Result<number, string> = Result.err("Some error message");
+   * assertEquals(y.isOk(), false);
    * ```
    */
   isOk(): boolean {
@@ -81,16 +81,16 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * @example
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertEquals } from "jsr:@std/assert@1";
    *
    * const x: Result<number, string> = Result.ok(2);
-   * assertEquals(x.is_ok_and((x) => x > 1), true);
+   * assertEquals(x.isOkAnd((x) => x > 1), true);
    *
    * const y: Result<number, string> = Result.ok(2);
-   * assertEquals(y.is_ok_and((y) => y > 0), false);
+   * assertEquals(y.isOkAnd((y) => y > 0), false);
    *
-   * const z: Result<number, string> = Result.err('hey');
-   * assertEquals(z.is_ok_and((z) => z > 1), false);
+   * const z: Result<number, string> = Result.err("hey");
+   * assertEquals(z.isOkAnd((z) => z > 1), false);
    * ```
    */
   isOkAnd(f: (value: T) => boolean): boolean {
@@ -105,13 +105,13 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * @example
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertEquals } from "jsr:@std/assert@1";
    *
    * const x: Result<number, string> = Result.ok(-3);
-   * assertEquals(x.is_err(), false);
+   * assertEquals(x.isErr(), false);
    *
-   * const y: Result<number, string> = Result.err('Some error message');
-   * assertEquals(y.is_err(), true);
+   * const y: Result<number, string> = Result.err("Some error message");
+   * assertEquals(y.isErr(), true);
    * ```
    */
   isErr(): boolean {
@@ -123,16 +123,16 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * @example
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertEquals } from "jsr:@std/assert@1";
    *
-   * const x: Result<number, string> = Result.error('Some error message');
-   * assertEquals(x.is_err_and((x) => x === 'Some error message'), true);
+   * const x: Result<number, string> = Result.err("Some error message");
+   * assertEquals(x.isErrAnd((x) => x === "Some error message"), true);
    *
-   * const y: Result<number, string> = Result.err('Another error message);
-   * assertEquals(y.is_err_and((y) => y === 'Some error message'), false);
+   * const y: Result<number, string> = Result.err("Another error message");
+   * assertEquals(y.isErrAnd((y) => y === "Some error message"), false);
    *
-   * const z: Result<number, string> = Result.Ok(123);
-   * assertEquals(z.is_err_and((z) => z === 'Some error message'), false);
+   * const z: Result<number, string> = Result.ok(123);
+   * assertEquals(z.isErrAnd((z) => z === "Some error message"), false);
    * ```
    */
   isErrAnd(f: (err: E) => boolean): boolean {
@@ -147,12 +147,12 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * @example
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertEquals } from "jsr:@std/assert@1";
    *
    * const x: Result<number, string> = Result.ok(100);
    * assertEquals(x.ok() , 100);
    *
-   * const y: Result<number, string> = Result.err('Some error message');
+   * const y: Result<number, string> = Result.err("Some error message");
    * assertEquals(y.ok() , null);
    * ```
    */
@@ -164,13 +164,13 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * @example
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertEquals } from "jsr:@std/assert@1";
    *
    * const x: Result<number, string> = Result.ok(100);
    * assertEquals(x.ok(true) , 100);
    *
-   * const z: Result<number, string> = Result.error('Some error message');
-   * assertEquals(z.ok(true) , Resule.none);
+   * const z: Result<number, string> = Result.err("Some error message");
+   * assertEquals(z.ok(true) , Result.none);
    * ```
    */
   ok(noneSymbol: true): T | typeof Result["none"];
@@ -191,10 +191,10 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * @example
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertEquals } from "jsr:@std/assert@1";
    *
-   * const x: Result<number, string> = Result.error('Some error message');
-   * assertEquals(x.err() , 'Some error message');
+   * const x: Result<number, string> = Result.err("Some error message");
+   * assertEquals(x.err() , "Some error message");
    *
    * const y: Result<number, string> = Result.ok(100);
    * assertEquals(y.err() , null);
@@ -208,13 +208,13 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * @example
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertEquals } from "jsr:@std/assert@1";
    *
-   * const x: Result<number, string> = Result.error('Some error message');
-   * assertEquals(x.err(true) , 'Some error message');
+   * const x: Result<number, string> = Result.err("Some error message");
+   * assertEquals(x.err(true) , "Some error message");
    *
    * const z: Result<number, string> = Result.ok(100);
-   * assertEquals(z.err(true) , Resule.none);
+   * assertEquals(z.err(true) , Result.none);
    * ```
    */
   err(noneSymbol: true): E | typeof Result["none"];
@@ -308,17 +308,17 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * @example
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertEquals } from "jsr:@std/assert@1";
    *
-   * let x: Result<number, string> = Result.ok(2);
+   * const x: Result<number, string> = Result.ok(2);
    * assertEquals(x.unwrap(), 2);
    * ```
    *
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertThrows } from "jsr:@std/assert@1";
    *
-   * let x: Result<number, string> = Result.error(2);
-   * x.unwrap(); // Throw Panic error
+   * const x: Result<number, string> = Result.err("Some error message");
+   * assertThrows(() => x.unwrap());
    * ```
    *
    * @throws {Panic} if the value is an {@linkcode Err}, with a panic message provided by the Err’s value.
@@ -360,31 +360,31 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * @example
    * ```ts
-   * import { assertEquals } from 'jsr:@std/assert@1';
+   * import { assertEquals } from "jsr:@std/assert@1";
    *
    * const x: Result<number, string> = Result.ok(123);
    * const number = x.match(
    *   (x) => x,
-   *   (err) => 0
+   *   (_) => 0
    * );
    *
    * assertEquals(number, 123);
    *
    * const y: Result<number, string> = Result.ok(123);
-   * const string = x.match(
-   *   (x) => 'expected error. but got ' + x,
+   * const string = y.match(
+   *   (y) => "expected error. but got " + y,
    *   (error) => error
    * );
    *
-   * assertEquals(string, 'expected error. but got 123');
+   * assertEquals(string, "expected error. but got 123");
    *
-   * const z: Result<number, string> = Result.error('Some error message');
-   * const error = x.match(
-   *   (x) => 'expected error. but got ' + x,
+   * const z: Result<number, string> = Result.err("Some error message");
+   * const error = z.match(
+   *   (z) => "expected error. but got " + z,
    *   (error) => error
    * );
    *
-   * assertEquals(error, 'Some error message');
+   * assertEquals(error, "Some error message");
    * ```
    */
   match<A>(ok: (value: T) => A, err: (value: E) => A): A {
