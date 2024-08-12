@@ -305,22 +305,22 @@ export class Result<T, E> implements Match<[T, E]> {
   /**
    * Returns the contained {@linkcode Ok} value.
    * Because this function throw {@linkcode Panic}, its use is generally discouraged. Instead, prefer to use {@linkcode Result#match} and handle the Err case explicitly, or call {@linkcode Result#unwrap_or}, {@linkcode Result#unwrap_or_else}, or {@linkcode Result#unwrap_or_default}.
-   * 
+   *
    * @example
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
-   * 
+   *
    * let x: Result<number, string> = Result.ok(2);
    * assertEquals(x.unwrap(), 2);
    * ```
-   * 
+   *
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
-   * 
+   *
    * let x: Result<number, string> = Result.error(2);
    * x.unwrap(); // Throw Panic error
    * ```
-   * 
+   *
    * @throws {Panic} if the value is an {@linkcode Err}, with a panic message provided by the Err’s value.
    */
   unwrap(): T {
