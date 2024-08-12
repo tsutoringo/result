@@ -1,25 +1,41 @@
-import type { Match } from './match.ts';
+import type { Match } from "./match.ts";
 
+/**
+ * The type representing success.
+ */
 export type Ok<T> = {
   success: true;
   value: T;
 };
 
+/**
+ * The type representing failure.
+ */
 export type Err<E> = {
   success: false;
   value: E;
 };
 
+/**
+ * Type used in {@linkcode Result}.
+ */
 export type ResultInner<T, E> = Ok<T> | Err<E>;
 
+/**
+ * The error type that is thrown when {@linkcode Result#unwrap} is called.
+ */
 export class Panic extends Error {
   constructor(message: string, cause: unknown) {
     super(message, { cause });
   }
 }
 
+/**
+ * `Result` is a type that represents either success ({@linkcode Ok}) or failure ({@linkcode Err}).
+ * See the module documentaion for details.
+ */
 export class Result<T, E> implements Match<[T, E]> {
-  static readonly none: unique symbol = Symbol('none');
+  static readonly none: unique symbol = Symbol("none");
 
   static ok<T extends void, E>(value?: T): Result<T, E>;
   static ok<T, E>(value: T): Result<T, E>;
@@ -43,9 +59,7 @@ export class Result<T, E> implements Match<[T, E]> {
   }
 
   /**
-   * Returns `true` if the result is {@link Ok}.
-   *
-   * # Examples
+   * Returns `true` if the result is {@linkcode Ok}.
    *
    * @example
    * ```ts
@@ -63,9 +77,7 @@ export class Result<T, E> implements Match<[T, E]> {
   }
 
   /**
-   * Returns `true` if the result is {@link Ok} and the value inside of it matches a predicate.
-   *
-   * # Examples
+   * Returns `true` if the result is {@linkcode Ok} and the value inside of it matches a predicate.
    *
    * @example
    * ```ts
@@ -89,9 +101,7 @@ export class Result<T, E> implements Match<[T, E]> {
   }
 
   /**
-   * Returns `true` if the result is {@link Err}.
-   *
-   * # Examples
+   * Returns `true` if the result is {@linkcode Err}.
    *
    * @example
    * ```ts
@@ -109,9 +119,7 @@ export class Result<T, E> implements Match<[T, E]> {
   }
 
   /**
-   * Returns `true` if the result is {@link Err} and the value inside of it matches a predicate.
-   *
-   * # Examples
+   * Returns `true` if the result is {@linkcode Err} and the value inside of it matches a predicate.
    *
    * @example
    * ```ts
@@ -137,10 +145,6 @@ export class Result<T, E> implements Match<[T, E]> {
   /**
    * Convert from `Result<T, E>` to `T | null`.
    *
-   * If T is `null`, setting the argument `noneSymbol` to true will result in `T | typeof Result.none`, making the distinction.
-   *
-   * # Example
-   *
    * @example
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
@@ -150,13 +154,26 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * const y: Result<number, string> = Result.err('Some error message');
    * assertEquals(y.ok() , null);
+   * ```
+   */
+  ok(noneSymbol?: false): T | null;
+  /**
+   * Convert from `Result<T, E>` to `T | typeof Result.none`.
+   *
+   * If T is `null`, setting the argument `noneSymbol` to true will result in `T | typeof Result.none`, making the distinction.
+   *
+   * @example
+   * ```ts
+   * import { assertEquals } from 'jsr:@std/assert@1';
+   *
+   * const x: Result<number, string> = Result.ok(100);
+   * assertEquals(x.ok(true) , 100);
    *
    * const z: Result<number, string> = Result.error('Some error message');
    * assertEquals(z.ok(true) , Resule.none);
    * ```
    */
-  ok(noneSymbol?: false): T | null;
-  ok(noneSymbol: true): T | typeof Result['none'];
+  ok(noneSymbol: true): T | typeof Result["none"];
   ok(noneSymbol?: boolean) {
     if (this.innerResult.success) {
       return this.innerResult.value;
@@ -172,10 +189,6 @@ export class Result<T, E> implements Match<[T, E]> {
   /**
    * Convert from `Result<T, E>` to `E | null`.
    *
-   * If T is `null`, setting the argument `noneSymbol` to true will result in `E | typeof Result.none`, making the distinction.
-   *
-   * # Example
-   *
    * @example
    * ```ts
    * import { assertEquals } from 'jsr:@std/assert@1';
@@ -185,13 +198,26 @@ export class Result<T, E> implements Match<[T, E]> {
    *
    * const y: Result<number, string> = Result.ok(100);
    * assertEquals(y.err() , null);
+   * ```
+   */
+  err(noneSymbol?: false): E | null;
+  /**
+   * Convert from `Result<T, E>` to `E | typeof Result.none`.
+   *
+   * If T is `null`, setting the argument `noneSymbol` to true will result in `E | typeof Result.none`, making the distinction.
+   *
+   * @example
+   * ```ts
+   * import { assertEquals } from 'jsr:@std/assert@1';
+   *
+   * const x: Result<number, string> = Result.error('Some error message');
+   * assertEquals(x.err(true) , 'Some error message');
    *
    * const z: Result<number, string> = Result.ok(100);
    * assertEquals(z.err(true) , Resule.none);
    * ```
    */
-  err(noneSymbol?: false): E | null;
-  err(noneSymbol: true): E | typeof Result['none'];
+  err(noneSymbol: true): E | typeof Result["none"];
   err(noneSymbol?: boolean) {
     if (!this.innerResult.success) {
       return this.innerResult.value;
@@ -276,11 +302,32 @@ export class Result<T, E> implements Match<[T, E]> {
     );
   }
 
+  /**
+   * Returns the contained {@linkcode Ok} value.
+   * Because this function throw {@linkcode Panic}, its use is generally discouraged. Instead, prefer to use {@linkcode Result#match} and handle the Err case explicitly, or call {@linkcode Result#unwrap_or}, {@linkcode Result#unwrap_or_else}, or {@linkcode Result#unwrap_or_default}.
+   * 
+   * @example
+   * ```ts
+   * import { assertEquals } from 'jsr:@std/assert@1';
+   * 
+   * let x: Result<number, string> = Result.ok(2);
+   * assertEquals(x.unwrap(), 2);
+   * ```
+   * 
+   * ```ts
+   * import { assertEquals } from 'jsr:@std/assert@1';
+   * 
+   * let x: Result<number, string> = Result.error(2);
+   * x.unwrap(); // Throw Panic error
+   * ```
+   * 
+   * @throws {Panic} if the value is an {@linkcode Err}, with a panic message provided by the Err’s value.
+   */
   unwrap(): T {
     return this.match(
       (value) => value,
       (error) => {
-        throw new Panic('called `Result.unwrap()` on an `Err`', error);
+        throw new Panic("called `Result.unwrap()` on an `Err`", error);
       },
     );
   }
@@ -310,8 +357,6 @@ export class Result<T, E> implements Match<[T, E]> {
 
   /**
    * Methods that can be used similarly to the Match statement, a Rust expression.
-   *
-   * # Examples
    *
    * @example
    * ```ts
@@ -350,7 +395,6 @@ export class Result<T, E> implements Match<[T, E]> {
     }
   }
 
-
   async awaited(): Promise<Result<Awaited<T>, Awaited<E>>> {
     if (this.innerResult.success) {
       if (this.innerResult.value instanceof Promise) {
@@ -369,10 +413,10 @@ export class Result<T, E> implements Match<[T, E]> {
 }
 
 /**
- * Alias of {@link Result.ok}.
+ * Alias of {@linkcode Result.ok}.
  */
 export const ok = Result.ok;
 /**
- * Alias of {@link Resule.err}.
+ * Alias of {@linkcode Result.err}.
  */
 export const err = Result.err;
