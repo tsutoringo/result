@@ -1,4 +1,4 @@
-import { Match } from './match.ts';
+import type { Match } from './match.ts';
 
 export type Ok<T> = {
   success: true;
