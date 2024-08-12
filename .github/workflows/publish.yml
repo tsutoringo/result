@@ -1,19 +1,33 @@
-name: Publish
+name: workspace publish
+
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
+  workflow_dispatch:
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     permissions:
       contents: read
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Clone repository
+        uses: actions/checkout@v4
 
-      - name: Publish package
-        run: npx jsr publish
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: canary
+
+      - name: Format
+        run: deno fmt --check
+
+      - name: Test
+        run: deno task test
+
+      - name: Publish to JSR
+        run: deno publish
