@@ -314,7 +314,7 @@ export class Result<T, E>
 
   /**
    * Returns the contained {@linkcode Ok} value.
-   * Because this function throw {@linkcode Panic}, its use is generally discouraged. Instead, prefer to use {@linkcode Result.prototype.match} and handle the Err case explicitly, or call {@linkcode Result.prototype.unwrap_or}, {@linkcode Result.prototype.unwrap_or_else}, or {@linkcode Result.prototype.unwrap_or_default}.
+   * Because this function throw {@linkcode Panic}, its use is generally discouraged. Instead, prefer to use {@linkcode Result.prototype.match} and handle the Err case explicitly, or call {@linkcode Result.prototype.unwrapOr}, {@linkcode Result.prototype.unwrapOrElse}.
    *
    * @example
    * ```ts
