@@ -1,4 +1,3 @@
-
 /**
  * By making `value` a union and adding `isBreak`, the process on the caller side is simplified.
  *

@@ -44,8 +44,7 @@ export type EasyFlow<T, E> = {
  * `Result` is a type that represents either success ({@linkcode Ok}) or failure ({@linkcode Err}).
  * See the module documentaion for details.
  */
-export class Result<T, E>
-  implements Match<[T, E]>, Try<Result<T, E>, T> {
+export class Result<T, E> implements Match<[T, E]>, Try<Result<T, E>, T> {
   static readonly none: unique symbol = Symbol("none");
 
   static ok<T extends void, E>(value?: T): Result<T, E>;
