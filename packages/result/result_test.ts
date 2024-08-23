@@ -169,3 +169,22 @@ Deno.test({
     assertEquals(error, "Some error message");
   },
 });
+
+Deno.test({
+  name: "Result#branch",
+  fn() {
+    const returnError = (): Result<number, string> => {
+      return Result.err("Some error message");
+    };
+
+    const func = (): Result<boolean, string> => {
+      const result = returnError().branch();
+
+      if (result.isBreak) return result.value;
+
+      return Result.ok(false);
+    };
+
+    assert(func().isErr() === true);
+  }
+})

@@ -441,10 +441,10 @@ export class Result<T, E> implements Match<[T, E]>, Try<Result<T, E>, T> {
    *
    * ```
    */
-  branch(): ControlFlow<Result<T, E>, T> {
-    return this.match<ControlFlow<Result<T, E>, T>>(
+  branch(): ControlFlow<Result<never, E>, T> {
+    return this.match<ControlFlow<Result<never, E>, T>>(
       (value) => ({ isBreak: false, value: value }),
-      (_) => ({ isBreak: true, value: this }),
+      (_) => ({ isBreak: true, value: this as unknown as Result<never, E> }),
     );
   }
 }
