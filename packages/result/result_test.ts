@@ -186,5 +186,5 @@ Deno.test({
     };
 
     assert(func().isErr() === true);
-  }
-})
+  },
+});
