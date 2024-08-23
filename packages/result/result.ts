@@ -1,4 +1,5 @@
 import type { Match } from "./match.ts";
+import type { ControlFlow, ToControlFlow } from "./controlFlow.ts";
 
 /**
  * The type representing success.
@@ -22,7 +23,7 @@ export type Err<E> = {
 export type ResultInner<T, E> = Ok<T> | Err<E>;
 
 /**
- * The error type that is thrown when {@linkcode Result#unwrap} is called.
+ * The error type that is thrown when {@linkcode Result.prototype.unwrap} is called.
  */
 export class Panic extends Error {
   constructor(message: string, cause: unknown) {
@@ -30,11 +31,20 @@ export class Panic extends Error {
   }
 }
 
+export type EasyFlow<T, E> = {
+  success: true;
+  value: T;
+} | {
+  success: false;
+  value: Result<T, E>;
+};
+
 /**
  * `Result` is a type that represents either success ({@linkcode Ok}) or failure ({@linkcode Err}).
  * See the module documentaion for details.
  */
-export class Result<T, E> implements Match<[T, E]> {
+export class Result<T, E>
+  implements Match<[T, E]>, ToControlFlow<Result<T, E>, T> {
   static readonly none: unique symbol = Symbol("none");
 
   static ok<T extends void, E>(value?: T): Result<T, E>;
@@ -304,7 +314,7 @@ export class Result<T, E> implements Match<[T, E]> {
 
   /**
    * Returns the contained {@linkcode Ok} value.
-   * Because this function throw {@linkcode Panic}, its use is generally discouraged. Instead, prefer to use {@linkcode Result#match} and handle the Err case explicitly, or call {@linkcode Result#unwrap_or}, {@linkcode Result#unwrap_or_else}, or {@linkcode Result#unwrap_or_default}.
+   * Because this function throw {@linkcode Panic}, its use is generally discouraged. Instead, prefer to use {@linkcode Result.prototype.match} and handle the Err case explicitly, or call {@linkcode Result.prototype.unwrap_or}, {@linkcode Result.prototype.unwrap_or_else}, or {@linkcode Result.prototype.unwrap_or_default}.
    *
    * @example
    * ```ts
@@ -409,6 +419,33 @@ export class Result<T, E> implements Match<[T, E]> {
         return Result.err(this.innerResult.value as Awaited<E>);
       }
     }
+  }
+
+  /**
+   * Enables processing as close as possible to Rust's `?` operator.
+   * @example
+   * ```ts
+   * const withResult = (): Result<number, string> => {
+   *    return Result.ok(2);
+   * }
+   *
+   * const func = (): Result<number, string> => {
+   *   const result = withResult().controlFlow();
+   *
+   *   if (result.isBreak) return result.value;
+   *
+   *   // result.value is number
+   * }
+   *
+   * func();
+   *
+   * ```
+   */
+  controlFlow(): ControlFlow<Result<T, E>, T> {
+    return this.match<ControlFlow<Result<T, E>, T>>(
+      (value) => ({ isBreak: false, value: value }),
+      (_) => ({ isBreak: true, value: this }),
+    );
   }
 }
 
