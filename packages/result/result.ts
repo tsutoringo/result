@@ -1,5 +1,6 @@
+import { ControlFlow } from "./controlFlow.ts";
 import type { Match } from "./match.ts";
-import type { ControlFlow, ToControlFlow } from "./controlFlow.ts";
+import type { Try } from "./try.ts";
 
 /**
  * The type representing success.
@@ -44,7 +45,7 @@ export type EasyFlow<T, E> = {
  * See the module documentaion for details.
  */
 export class Result<T, E>
-  implements Match<[T, E]>, ToControlFlow<Result<T, E>, T> {
+  implements Match<[T, E]>, Try<Result<T, E>, T> {
   static readonly none: unique symbol = Symbol("none");
 
   static ok<T extends void, E>(value?: T): Result<T, E>;
@@ -441,7 +442,7 @@ export class Result<T, E>
    *
    * ```
    */
-  controlFlow(): ControlFlow<Result<T, E>, T> {
+  branch(): ControlFlow<Result<T, E>, T> {
     return this.match<ControlFlow<Result<T, E>, T>>(
       (value) => ({ isBreak: false, value: value }),
       (_) => ({ isBreak: true, value: this }),
