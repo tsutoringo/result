@@ -32,14 +32,6 @@ export class Panic extends Error {
   }
 }
 
-export type EasyFlow<T, E> = {
-  success: true;
-  value: T;
-} | {
-  success: false;
-  value: Result<T, E>;
-};
-
 /**
  * `Result` is a type that represents either success ({@linkcode Ok}) or failure ({@linkcode Err}).
  * See the module documentaion for details.
