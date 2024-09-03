@@ -430,7 +430,7 @@ export class Result<T, E> implements Match<[T, E]>, Try<Result<T, E>, T> {
    * }
    *
    * const func = (): Result<number, string> => {
-   *   const result = withResult().controlFlow();
+   *   const result = withResult().branch();
    *
    *   if (result.isBreak) return result.value;
    *
