@@ -1,4 +1,4 @@
-import { ControlFlow } from "./controlFlow.ts";
+import type { ControlFlow } from "./controlFlow.ts";
 import type { Match } from "./match.ts";
 import type { Try } from "./try.ts";
 
