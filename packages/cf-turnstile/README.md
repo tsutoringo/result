@@ -1,10 +1,13 @@
 # @result/cf-turnstile
+
 [![JSR](https://jsr.io/badges/@result/cf-turnstile)](https://jsr.io/@result/cf-turnstile)
 [![JSR](https://jsr.io/badges/@result/cf-turnstile/score)](https://jsr.io/@result/cf-turnstile)
 
-@tsutoringo/cf-turnstile is [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) API Wrapper
+@tsutoringo/cf-turnstile is
+[Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) API Wrapper
 
 ## Example
+
 ```ts
 // This is the demo secret key. In production, we recommend
 // you store your secret key(s) safely.
