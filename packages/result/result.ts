@@ -350,6 +350,15 @@ export class Result<T, E> implements Match<[T, E]>, Try<Result<T, E>, T> {
     );
   }
 
+  unwrapErr(): E {
+    return this.match(
+      (value) => {
+        throw new Panic("called `Result.unwrapErr()` on an `Ok`", value);
+      },
+      (error) => error,
+    );
+  }
+
   unwrapOr(defaultValue: T): T {
     return this.match(
       (value) => value,
