@@ -39,17 +39,17 @@ export class Panic extends Error {
 export class Result<T, E> implements Match<[T, E]>, Try<Result<T, E>, T> {
   static readonly none: unique symbol = Symbol("none");
 
-  static ok<T extends void, E>(value?: T): Result<T, E>;
-  static ok<T, E>(value: T): Result<T, E>;
-  static ok<T, E>(value: T): Result<T, E> {
-    return new Result<T, E>({
+  static ok<T extends void>(value?: T): Result<T, never>;
+  static ok<T>(value: T): Result<T, never>;
+  static ok<T>(value: T): Result<T, never> {
+    return new Result<T, never>({
       success: true,
       value,
     });
   }
 
-  static err<T, E>(value: E): Result<T, E> {
-    return new Result<T, E>({
+  static err<E>(value: E): Result<never, E> {
+    return new Result<never, E>({
       success: false,
       value,
     });
