@@ -232,6 +232,21 @@ export class Result<T, E> implements Match<[T, E]>, Try<Result<T, E>, T> {
     }
   }
 
+  /**
+   * Maps a Result<T, E> to Result<U, E> by applying a function to a contained Ok value, leaving an Err value untouched.
+   * This function can be used to compose the results of two functions.
+   *
+   * @example
+   * ```ts
+   * import { assertEquals } from "jsr:@std/assert@1";
+   *
+   * const x: Result<number, string> = Result.ok(100);
+   * assertEquals(x.map((i) => i * 2).unwrap(), 200);
+   *
+   * const z: Result<number, string> = Result.err("Some error message");
+   * assertEquals(z.map((i) => i * 2), "Some error message");
+   * ```
+   */
   map<U>(op: (value: T) => U): Result<U, E> {
     return this.match<Result<U, E>>(
       (value) => Result.ok(op(value)),
