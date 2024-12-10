@@ -89,7 +89,7 @@ export class Result<T, E> implements Match<[T, E]>, Try<Result<T, E>, T> {
    * assertEquals(x.isOkAnd((x) => x > 1), true);
    *
    * const y: Result<number, string> = Result.ok(2);
-   * assertEquals(y.isOkAnd((y) => y > 0), false);
+   * assertEquals(y.isOkAnd((y) => y < 0), false);
    *
    * const z: Result<number, string> = Result.err("hey");
    * assertEquals(z.isOkAnd((z) => z > 1), false);
@@ -316,6 +316,7 @@ export class Result<T, E> implements Match<[T, E]>, Try<Result<T, E>, T> {
    * assertEquals(x.unwrap(), 2);
    * ```
    *
+   * @example
    * ```ts
    * import { assertThrows } from "jsr:@std/assert@1";
    *
@@ -419,15 +420,15 @@ export class Result<T, E> implements Match<[T, E]>, Try<Result<T, E>, T> {
    * ```ts
    * const withResult = (): Result<number, string> => {
    *    return Result.ok(2);
-   * }
+   * };
    *
    * const func = (): Result<number, string> => {
    *   const result = withResult().branch();
    *
    *   if (result.isBreak) return result.value;
    *
-   *   // result.value is number
-   * }
+   *   return Result.ok(result.value);
+   * };
    *
    * func();
    *
