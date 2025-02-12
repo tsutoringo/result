@@ -5,5 +5,6 @@
  */
 
 export * from "./result.ts";
+export * from "./async_result.ts";
 export * from "./match.ts";
 export * from "./controlFlow.ts";
