@@ -244,7 +244,7 @@ export class Result<T, E> implements Match<[T, E]>, Try<Result<T, E>, T> {
    * assertEquals(x.map((i) => i * 2).unwrap(), 200);
    *
    * const z: Result<number, string> = Result.err("Some error message");
-   * assertEquals(z.map((i) => i * 2), "Some error message");
+   * assertEquals(z.map((i) => i * 2).unwrapErr(), "Some error message");
    * ```
    */
   map<U>(op: (value: T) => U): Result<U, E> {

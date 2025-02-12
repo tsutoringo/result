@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "test": "deno test"
+    "test": "deno test --doc"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@^1.0.2"
